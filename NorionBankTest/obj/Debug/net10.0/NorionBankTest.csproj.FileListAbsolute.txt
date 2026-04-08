@@ -1,0 +1,15 @@
+/Users/jesper/Developer/TollAppTest/NorionBankTest/bin/Debug/net10.0/NorionBankTest
+/Users/jesper/Developer/TollAppTest/NorionBankTest/bin/Debug/net10.0/NorionBankTest.deps.json
+/Users/jesper/Developer/TollAppTest/NorionBankTest/bin/Debug/net10.0/NorionBankTest.runtimeconfig.json
+/Users/jesper/Developer/TollAppTest/NorionBankTest/bin/Debug/net10.0/NorionBankTest.dll
+/Users/jesper/Developer/TollAppTest/NorionBankTest/bin/Debug/net10.0/NorionBankTest.pdb
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.GeneratedMSBuildEditorConfig.editorconfig
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.AssemblyInfoInputs.cache
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.AssemblyInfo.cs
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.csproj.CoreCompileInputs.cache
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.sourcelink.json
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.dll
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/refint/NorionBankTest.dll
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.pdb
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/NorionBankTest.genruntimeconfig.cache
+/Users/jesper/Developer/TollAppTest/NorionBankTest/obj/Debug/net10.0/ref/NorionBankTest.dll

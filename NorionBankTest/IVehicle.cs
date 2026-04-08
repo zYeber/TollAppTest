@@ -1,6 +1,6 @@
 namespace NorionBankTest;
 
-public interface Vehicle
+public interface IVehicle
 {
     String GetVehicleType();
 }

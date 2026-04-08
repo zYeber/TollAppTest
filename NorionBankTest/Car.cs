@@ -1,6 +1,6 @@
 namespace NorionBankTest;
 
-public class Car : Vehicle
+public class Car : IVehicle
 {
     public string GetVehicleType()
     {
