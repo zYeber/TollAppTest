@@ -12,15 +12,15 @@ public class TollCalculator
 
     public int GetTollFee(IVehicle vehicle, DateTime[] dates)
     {
-        DateTime intervalStart = dates[0];
-        int totalFee = 0;
-        foreach (DateTime date in dates)
+        var intervalStart = dates[0];
+        var totalFee = 0;
+        foreach (var date in dates)
         {
-            int nextFee = GetTollFee(date, vehicle);
-            int tempFee = GetTollFee(intervalStart, vehicle);
+            var nextFee = GetTollFee(date, vehicle);
+            var tempFee = GetTollFee(intervalStart, vehicle);
 
             long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            long minutes = diffInMillies / 1000 / 60;
+            var minutes = diffInMillies / 1000 / 60;
 
             if (minutes <= 60)
             {
@@ -40,7 +40,7 @@ public class TollCalculator
     private bool IsTollFreeVehicle(IVehicle vehicle)
     {
         if (vehicle == null) return false;
-        String vehicleType = vehicle.GetVehicleType();
+        var vehicleType = vehicle.GetVehicleType();
         return Enum.TryParse<TollFreeVehicles>(vehicleType, out _);
     }
 
@@ -48,52 +48,33 @@ public class TollCalculator
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
 
-        int hour = date.Hour;
-        int minute = date.Minute;
+        var time = date.TimeOfDay;
 
-        switch (hour)
-        {
-            case 6 when minute is >= 0 and <= 29:
-                return 8;
-            case 6 when minute is >= 30 and <= 59:
-                return 13;
-            case 7 when minute is >= 0 and <= 59:
-                return 18;
-            case 8 when minute is >= 0 and <= 29:
-                return 13;
-            case >= 8 and <= 14 when minute is >= 30 and <= 59:
-                return 8;
-            case 15 when minute is >= 0 and <= 29:
-                return 13;
-            case 15 when minute >= 0:
-            case 16 when minute <= 59:
-                return 18;
-            case 17 when minute is >= 0 and <= 59:
-                return 13;
-            case 18 when minute is >= 0 and <= 29:
-                return 8;
-            default:
-                return 0;
-        }
+        if (time >= TimeSpan.FromHours(6) && time < TimeSpan.FromHours(6.5)) return 8;
+        if (time < TimeSpan.FromHours(7)) return 13;
+        if (time < TimeSpan.FromHours(8)) return 18;
+        if (time < TimeSpan.FromHours(8.5)) return 13;
+        if (time < TimeSpan.FromHours(15)) return 8;
+        if (time < TimeSpan.FromHours(15.5)) return 13;
+        if (time < TimeSpan.FromHours(17)) return 18;
+        if (time < TimeSpan.FromHours(18)) return 13;
+        if (time < TimeSpan.FromHours(18.5)) return 8;
+
+        return 0;
     }
 
-    private Boolean IsTollFreeDate(DateTime date)
+    private bool IsTollFreeDate(DateTime date)
     {
-        int year = date.Year;
-        int month = date.Month;
-        int day = date.Day;
+        if (date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday)
+            return true;
 
-        if (date.DayOfWeek is DayOfWeek.Saturday or DayOfWeek.Sunday) return true;
+        if (date.Year != 2013)
+            return false;
 
-        if (year != 2013) return false;
-        return month == 1 && day == 1 ||
-               month == 3 && (day == 28 || day == 29) ||
-               month == 4 && (day == 1 || day == 30) ||
-               month == 5 && (day == 1 || day == 8 || day == 9) ||
-               month == 6 && (day == 5 || day == 6 || day == 21) ||
-               month == 7 ||
-               month == 11 && day == 1 ||
-               month == 12 && (day == 24 || day == 25 || day == 26 || day == 31);
+        if (date.Month == 7)
+            return true;
+
+        return Holidays.Contains((date.Month, date.Day));
     }
 
     private enum TollFreeVehicles
@@ -105,4 +86,24 @@ public class TollCalculator
         Foreign = 4,
         Military = 5
     }
+
+    private static readonly (int month, int day)[] Holidays =
+    {
+        (1, 1),
+        (3, 28),
+        (3, 29),
+        (4, 1),
+        (4, 30),
+        (5, 1),
+        (5, 8),
+        (5, 9),
+        (6, 5),
+        (6, 6),
+        (6, 21),
+        (11, 1),
+        (12, 24),
+        (12, 25),
+        (12, 26),
+        (12, 31)
+    };
 }
