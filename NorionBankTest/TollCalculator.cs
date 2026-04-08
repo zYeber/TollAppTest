@@ -46,19 +46,16 @@ public class TollCalculator
 
     public int GetTollFee(DateTime date, IVehicle vehicle)
     {
-        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle)) return 0;
+        if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
+            return 0;
 
         var time = date.TimeOfDay;
 
-        if (time >= TimeSpan.FromHours(6) && time < TimeSpan.FromHours(6.5)) return 8;
-        if (time < TimeSpan.FromHours(7)) return 13;
-        if (time < TimeSpan.FromHours(8)) return 18;
-        if (time < TimeSpan.FromHours(8.5)) return 13;
-        if (time < TimeSpan.FromHours(15)) return 8;
-        if (time < TimeSpan.FromHours(15.5)) return 13;
-        if (time < TimeSpan.FromHours(17)) return 18;
-        if (time < TimeSpan.FromHours(18)) return 13;
-        if (time < TimeSpan.FromHours(18.5)) return 8;
+        foreach (var (end, fee) in FeeTable)
+        {
+            if (time < end)
+                return fee;
+        }
 
         return 0;
     }
@@ -88,7 +85,7 @@ public class TollCalculator
     }
 
     private static readonly (int month, int day)[] Holidays =
-    {
+    [
         (1, 1),
         (3, 28),
         (3, 29),
@@ -105,5 +102,18 @@ public class TollCalculator
         (12, 25),
         (12, 26),
         (12, 31)
-    };
+    ];
+
+    private static readonly (TimeSpan End, int Fee)[] FeeTable =
+    [
+        (TimeSpan.FromHours(6.5), 8),
+        (TimeSpan.FromHours(7), 13),
+        (TimeSpan.FromHours(8), 18),
+        (TimeSpan.FromHours(8.5), 13),
+        (TimeSpan.FromHours(15), 8),
+        (TimeSpan.FromHours(15.5), 13),
+        (TimeSpan.FromHours(17), 18),
+        (TimeSpan.FromHours(18), 13),
+        (TimeSpan.FromHours(18.5), 8)
+    ];
 }
