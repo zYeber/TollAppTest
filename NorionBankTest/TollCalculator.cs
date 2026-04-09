@@ -10,14 +10,14 @@ public class TollCalculator
      * @return - the total toll fee for that day
      */
 
-    public int GetTollFee(IVehicle vehicle, DateTime[] dates)
+    public int GetTollFees(IVehicle vehicle, DateTime[] dates)
     {
         var intervalStart = dates[0];
         var totalFee = 0;
         foreach (var date in dates)
         {
-            var nextFee = GetTollFee(date, vehicle);
-            var tempFee = GetTollFee(intervalStart, vehicle);
+            var nextFee = GetTollFee(vehicle, date);
+            var tempFee = GetTollFee(vehicle, intervalStart);
 
             long diffInMillies = date.Millisecond - intervalStart.Millisecond;
             var minutes = diffInMillies / 1000 / 60;
@@ -44,7 +44,7 @@ public class TollCalculator
         return Enum.TryParse<TollFreeVehicles>(vehicleType, out _);
     }
 
-    public int GetTollFee(DateTime date, IVehicle vehicle)
+    public int GetTollFee(IVehicle vehicle, DateTime date)
     {
         if (IsTollFreeDate(date) || IsTollFreeVehicle(vehicle))
             return 0;
@@ -84,7 +84,7 @@ public class TollCalculator
         Military = 5
     }
 
-    private static readonly (int month, int day)[] Holidays =
+    private static readonly HashSet<(int month, int day)> Holidays =
     [
         (1, 1),
         (3, 28),
@@ -104,7 +104,7 @@ public class TollCalculator
         (12, 31)
     ];
 
-    private static readonly (TimeSpan End, int Fee)[] FeeTable =
+    private static readonly HashSet<(TimeSpan End, int Fee)> FeeTable =
     [
         (TimeSpan.FromHours(6.5), 8),
         (TimeSpan.FromHours(7), 13),
