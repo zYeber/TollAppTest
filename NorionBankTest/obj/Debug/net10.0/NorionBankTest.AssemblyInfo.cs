@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NorionBankTest")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35dcd1f97fc96e837e709e5b4905b5c02309f50f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44fa21278c8b40c57b28730cb56a393b702d707a")]
 [assembly: System.Reflection.AssemblyProductAttribute("NorionBankTest")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NorionBankTest")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
