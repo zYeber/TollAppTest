@@ -12,36 +12,41 @@ public class TollCalculator
 
     public int GetTollFees(IVehicle vehicle, DateTime[] dates)
     {
+        if(dates == null || dates.Length == 0) return 0;
+        
         var intervalStart = dates[0];
         var totalFee = 0;
-        foreach (var date in dates)
+        var intervalMaxFee = GetTollFee(vehicle, intervalStart);
+        var sortedDates = dates.OrderBy(d => d).ToArray();
+        
+        foreach (var date in sortedDates.Skip(1))
         {
             var nextFee = GetTollFee(vehicle, date);
-            var tempFee = GetTollFee(vehicle, intervalStart);
-
-            long diffInMillies = date.Millisecond - intervalStart.Millisecond;
-            var minutes = diffInMillies / 1000 / 60;
+            var minutes = (date - intervalStart).TotalMinutes;
 
             if (minutes <= 60)
             {
-                if (totalFee > 0) totalFee -= tempFee;
-                if (nextFee >= tempFee) tempFee = nextFee;
-                totalFee += tempFee;
+                if (nextFee > intervalMaxFee)
+                {
+                    intervalMaxFee = nextFee;
+                }
             }
             else
             {
-                totalFee += nextFee;
+                totalFee += intervalMaxFee;
+                intervalStart = date;
+                intervalMaxFee = nextFee;
             }
         }
-        if (totalFee > 60) totalFee = 60;
-        return totalFee;
+        totalFee += intervalMaxFee;
+        return Math.Min(totalFee, 60);
     }
 
     private bool IsTollFreeVehicle(IVehicle vehicle)
     {
         if (vehicle == null) return false;
         var vehicleType = vehicle.GetVehicleType();
-        return Enum.TryParse<TollFreeVehicles>(vehicleType, out _);
+        return Enum.TryParse<TollFreeVehicles>(vehicleType, ignoreCase: true, out _);
     }
 
     public int GetTollFee(IVehicle vehicle, DateTime date)
@@ -104,7 +109,7 @@ public class TollCalculator
         (12, 31)
     ];
 
-    private static readonly HashSet<(TimeSpan End, int Fee)> FeeTable =
+    private static readonly List<(TimeSpan End, int Fee)> FeeTable =
     [
         (TimeSpan.FromHours(6.5), 8),
         (TimeSpan.FromHours(7), 13),
